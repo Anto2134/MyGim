@@ -44,6 +44,7 @@ class _MyAppState extends State<MyApp> {
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(
             primarySwatch: Colors.blueGrey,
+            accentColor: Colors.red,
             backgroundColor: Colors.white,
             errorColor: Colors.red,
           ),

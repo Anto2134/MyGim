@@ -31,7 +31,6 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
       super.initState();
     }
 
-
     void showFormDialog() {
       showDialog(
           context: context,
@@ -46,6 +45,22 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
       final Duration sessionDuration =
           sessionEndTime.difference(sessionStartTime);
       super.dispose();
+    }
+
+    Widget? builder() {
+      if (context.read<nuovoAllenamento_provider>().isSessionActive) {
+        return context.watch<nuovoAllenamento_provider>().list_v;
+      }
+      return Center(
+        child: Text(
+          'AVVIA LA SESSIONE',
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 20,
+            fontWeight: FontWeight.w700
+          ),
+        ),
+      );
     }
 
     return MaterialApp(
@@ -108,7 +123,7 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
                 : Container(),
           ],
         ),
-        body: context.watch<nuovoAllenamento_provider>().list_v,
+        body: builder(),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
             // await saveData(sessionStartTime.toString());
@@ -127,6 +142,7 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
     );
   }
 }
+
 
 // Future<void> saveData(String data) async {
 //   final prefs = await SharedPreferences.getInstance();

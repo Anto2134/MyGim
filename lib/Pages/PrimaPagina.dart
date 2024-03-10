@@ -68,15 +68,16 @@ class _PrimaPaginaState extends State<PrimaPagina> {
               padding: EdgeInsets.symmetric(vertical: 10),
               child: Column(
                 children: [
-                  card_allenamento(),
-                  card_miei_allenamenti(),
-                  card_schede(),
+                  const card_allenamento(),
+                  const card_miei_allenamenti(),
+                  const card_schede(),
                 ],
               ),
             ),
           ],
         ),
       ),
+      backgroundColor: Colors.white,
       /*bottomNavigationBar: BottomNavigationBar(
         items: [
           BottomNavigationBarItem(
@@ -103,19 +104,8 @@ class _PrimaPaginaState extends State<PrimaPagina> {
 
   Color coloreNumero() {
     if (context.watch<timer_provider>().count_startato == 1) {
-      if (context.watch<timer_provider>().tempo_secondi == 5) {
-        return Colors.red;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 4) {
-        return Colors.white;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 3) {
-        return Colors.red;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 2) {
-        return Colors.white;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 1) {
+      if (context.watch<timer_provider>().tempo_secondi % 2 != 0 &&
+          context.watch<timer_provider>().tempo_secondi <= 5) {
         return Colors.red;
       }
     }

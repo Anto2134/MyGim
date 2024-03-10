@@ -1,66 +1,44 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:progettomygimnuovo/providers/nuovaSessione_provider.dart';
 import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
-import 'package:progettomygimnuovo/widgets/Widget_New_Training.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PaginaMieiAllenamenti extends StatefulWidget {
-  PaginaMieiAllenamenti({
+  const PaginaMieiAllenamenti({
     super.key,
   });
-  int count_data = 0;
 
   @override
   State<PaginaMieiAllenamenti> createState() => _PaginaMieiAllenamentiState();
-
-  //  void static; incrementa() {
-  //   count_data++;
-  // }
 }
 
 class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
   final List<String> list = ['c1', 'c2'];
   List<String> dati = [];
+  Map<String, Map<String, List<String>>> orario2ese = {};
 
   @override
   void initState() {
     super.initState();
-    dati = context.read<nuovoAllenamento_provider>().date;
-    // dati = context.read<nuovaSessione_provider>().dati;
-    //Provider.of<nuovaSessione_provider>(context, listen: false).loadData();
-    // loadData();
-    // context.read<nuovaSessione_provider>().loadData();
-  }
-
-  void dismissCard(String id) {
-    if (context.read<nuovoAllenamento_provider>().date.contains(id)) {
-      setState(() {
-        context.read<nuovoAllenamento_provider>().rimuovi(id);
-      });
+    orario2ese = context.read<nuovoAllenamento_provider>().orario2ese;
+    for (String s in orario2ese.keys) {
+      dati.add(s);
     }
   }
 
-  // Future<void> saveData() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   await prefs.setStringList('dati', dati);
-  // }
+  Future<void> loadMap() async {
+    orario2ese = await context.read<nuovoAllenamento_provider>().loadMap();
+  }
 
-  // Future<void> loadData() async {
-  //   final prefs = await SharedPreferences.getInstance();
-  //   setState(() {
-  //     dati = prefs.getStringList('dati') ?? [];
-  //   });
-  // }
-
-  // void addItem(String newItem){
-  //   setState(() {
-  //     dati.add(newItem);
-  //     saveData();
-  //   });
-  // }
+  void dismissCard(String id) {
+    if (context.read<nuovoAllenamento_provider>().orario2ese.containsKey(id)) {
+      setState(() {
+        dati.remove(id);
+        context.read<nuovoAllenamento_provider>().deleteMap(id);
+      });
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -71,36 +49,18 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
                 leading: IconButton(
                     onPressed: () {
                       Navigator.pushNamed(context, '/prima');
-                      // context.read<nuovaSessione_provider>().rimuovi();
                     },
                     icon: const Icon(
                       Icons.arrow_back,
                       color: Colors.red,
                     )),
               ),
-              // body: context.watch<nuovaSessione_provider>().list,
               body: ListView.builder(
-                // key: UniqueKey(),
-                itemCount:
-                    context.read<nuovoAllenamento_provider>().date.length,
-                // itemBuilder: (context, index) {
-                //   // return Widget_New_Training(category: list[index]);
-                //   return Card(
-                //     child: ListTile(
-                //       title: Text(context
-                //           .read<nuovoAllenamento_provider>()
-                //           .date[index]),
-                //       trailing: Text('$index'),
-                //     ),
-                //   );
-                // },
+                itemCount: dati.length,
                 itemBuilder: (context, index) {
-                  // final card = nuovoallenamentoProvider.date[index];
-                  final card =
-                      context.read<nuovoAllenamento_provider>().date[index];
+                  final card = dati[index];
                   return Dismissible(
                     key: Key(card),
-                    // key: UniqueKey(),
                     direction: DismissDirection.endToStart,
                     onDismissed: (direction) {
                       dismissCard(card);
@@ -122,17 +82,12 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
                           context,
                           MaterialPageRoute(
                             builder: (context) {
-                              for (String s in context
-                                  .read<nuovoAllenamento_provider>()
-                                  .date) {
-                                return SubCategoryPage(category: s);
-                              }
-                              return const CircularProgressIndicator(
-                                backgroundColor: Colors.red,
+                              return SubCategoryPage(
+                                category: card,
+                                map: orario2ese,
+                                indice: index,
                               );
                             },
-                            // builder: (context) =>
-                            //     SubCategoryPage(category: 'ciao'),
                           ),
                         );
                       },
@@ -144,114 +99,118 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
               ),
             ));
   }
-
-  // @override
-  // Widget build(BuildContext context) {
-  //   return MaterialApp(
-  //     home: Scaffold(
-  //       appBar: AppBar(
-  //         leading: IconButton(
-  //             onPressed: () {
-  //               Navigator.pushNamed(context, '/prima');
-  //             },
-  //             icon: const Icon(
-  //               Icons.arrow_back,
-  //               color: Colors.black,
-  //             )),
-  //       ),
-  //       // body: context.watch<nuovaSessione_provider>().list,
-  //       body: ListView.builder(
-  //         // itemCount: dati.length,
-  //         itemCount: context.read<nuovaSessione_provider>().dati.length,
-  //         // itemCount: nuovaSessione_provider().dati.length,
-  //         // itemCount:1,
-  //         itemBuilder: (context, index) {
-  //           // return Widget_New_Training(category: list[index]);
-  //           return Widget_New_Training();
-  //         },
-  //       ),
-  //     ),
-  //   );
-  // }
 }
 
-// class CardWidget extends StatefulWidget {
-//   final String category;
-
-//   CardWidget({required this.category});
-
-//   @override
-//   State<CardWidget> createState() => _CardWidgetState();
-// }
-
-// class _CardWidgetState extends State<CardWidget> {
-//   String data = "";
-//   Future<void> loadData() async {
-//     final prefs = await SharedPreferences.getInstance();
-//     setState(() {
-//       data = prefs.getString('nomeEsercizio') ?? "";
-//     });
-//   }
-
-//   @override
-//   void initState() {
-//     super.initState();
-//     loadData();
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Card(
-//       child: ListTile(
-//         title: Text(widget.category),
-//         trailing: Text('$data'),
-//         onTap: () {
-//           Navigator.push(
-//             context,
-//             MaterialPageRoute(
-//               builder: (context) => SubCategoryPage(category: widget.category),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-// }
-// }
-
-class SubCategoryPage extends StatelessWidget {
+class SubCategoryPage extends StatefulWidget {
   final String category;
-  final List<String> subCategories = [
-    'Subcategoria 1',
-    'Subcategoria 2',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-    'Subcategoria 3',
-  ];
+  final Map<String, Map<String, List<String>>> map;
+  final int indice;
 
-  SubCategoryPage({required this.category});
+  const SubCategoryPage(
+      {super.key,
+      required this.category,
+      required this.map,
+      required this.indice});
+
+  @override
+  State<SubCategoryPage> createState() => _SubCategoryPageState();
+}
+
+class _SubCategoryPageState extends State<SubCategoryPage> {
+  List<String> esercizi = [];
+  Map<String, List<String>>? app = {};
+  List<String>? dati = [];
+  int nSerie = 0;
+
+  int numeroElementi() {
+    Map<String, List<String>>? app = widget.map[widget.category];
+    esercizi = app!.keys.toList();
+    return esercizi.length;
+  }
+
+  String elemento(String nomeEsercizio) {
+    Map<String, List<String>>? app = widget.map[widget.category];
+    for (String s in esercizi) {
+      if (s == nomeEsercizio) {
+        return app![s].toString();
+      }
+    }
+    return 'null';
+  }
+
+  int numeroSerie() {
+    for (String s in dati!) {
+      return nSerie++;
+    }
+    return 0;
+  }
+
+  Widget stampa(String n) {
+    Map<String, List<String>>? app = widget.map[widget.category];
+    for (String s in esercizi) {
+      if (s == n) {
+        dati = app![s];
+        nSerie = numeroSerie();
+      }
+    }
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: dati!.map((String item) {
+        int n = 0;
+        n = numeroSerie();
+        return Flexible(
+          fit: FlexFit.tight,
+          flex: 0,
+          child: Text(
+            '$n serie: $item',
+            style: const TextStyle(
+                color: Colors.white, fontWeight: FontWeight.w700, fontSize: 18),
+          ),
+        );
+      }).toList(),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text(category),
+        centerTitle: true,
+        title: Text(
+          'Allenamento ${widget.indice + 1}',
+          style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 30),
+        ),
+        backgroundColor: Colors.black,
       ),
       body: ListView.builder(
-        itemCount: subCategories.length,
+        itemCount: numeroElementi(),
         itemBuilder: (context, index) {
-          return Card(
-            child: ListTile(
-              title: Text(subCategories[index]),
-              // Aggiungi azioni o navigazione per la sottocategoria qui
+          nSerie = 1;
+          return SizedBox(
+            height: 280,
+            child: Card(
+              color: Colors.black,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: ListTile(
+                // title: Text(esercizi[index]),
+                title: Padding(
+                  padding: const EdgeInsets.all(8),
+                  child: Text(
+                    esercizi[index],
+                    style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 28,
+                        fontWeight: FontWeight.w600),
+                  ),
+                ),
+                subtitle: SizedBox(
+                  height: 190,
+                  child: stampa(esercizi[index]),
+                ),
+                trailing: Text(elemento(esercizi[index])),
+              ),
             ),
           );
         },

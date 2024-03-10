@@ -1,6 +1,8 @@
 // ignore_for_file: prefer_const_constructors, camel_case_types
 
 import 'package:flutter/material.dart';
+import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
+import 'package:provider/provider.dart';
 
 
 class card_miei_allenamenti extends StatefulWidget {
@@ -15,6 +17,7 @@ class _card_miei_allenamentiState extends State<card_miei_allenamenti> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () {
+        context.read<nuovoAllenamento_provider>().loadMap();
         Navigator.pushNamed(context, 'miei_allenamenti');
       },
       child: Card(

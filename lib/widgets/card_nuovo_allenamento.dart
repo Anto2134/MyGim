@@ -50,15 +50,16 @@ class _card_nuovo_allenamentoState extends State<card_nuovo_allenamento> {
       }
     }
     return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: list!.map((String item) {
         int n = 0;
         n = contaSerie();
         return Flexible(
           fit: FlexFit.tight,
-          flex: 1,
+          flex: 0,
           child: Text(
             '$n serie: $item',
-            style: const TextStyle(color: Colors.red,fontWeight: FontWeight.w700,fontSize: 15),
+            style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w700,fontSize: 15),
           ),
         );
       }).toList(),
@@ -80,11 +81,11 @@ class _card_nuovo_allenamentoState extends State<card_nuovo_allenamento> {
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(50)),
                 child: ListTile(
-                  subtitle: SizedBox(height: 140, child: stampa(chiavi[index])),
+                  subtitle: SizedBox(height: 180, child: stampa(chiavi[index])),
                   title: Padding(
-                    padding: const EdgeInsets.only(left: 125, bottom: 20),
+                    padding: const EdgeInsets.all(5),
                     child: Text('Esercizio: ${chiavi[index]}',
-                        style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 18)),
+                        style: const TextStyle(color: Colors.white,fontWeight: FontWeight.w600,fontSize: 23)),
                   ),
                 ),
               ),
