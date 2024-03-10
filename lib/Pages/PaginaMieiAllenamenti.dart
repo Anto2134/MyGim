@@ -1,4 +1,4 @@
-// ignore_for_file: must_be_immutable
+// ignore_for_file: must_be_immutable, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
@@ -45,6 +45,14 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
     return Consumer<nuovoAllenamento_provider>(
         builder: (context, nuovoallenamentoProvider, child) => Scaffold(
               appBar: AppBar(
+                title: const Text(
+                  'Allenamenti',
+                  style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 25,
+                      fontWeight: FontWeight.w900),
+                ),
+                centerTitle: true,
                 backgroundColor: Colors.black,
                 leading: IconButton(
                     onPressed: () {
@@ -76,23 +84,40 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
                         ),
                       ),
                     ),
-                    child: ListTile(
-                      onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) {
-                              return SubCategoryPage(
-                                category: card,
-                                map: orario2ese,
-                                indice: index,
-                              );
-                            },
-                          ),
-                        );
-                      },
-                      title: Text('Allenamento ${index + 1} '),
-                      trailing: Text("creato il:" + card),
+                    child: Card(
+                      color: Colors.black,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: ListTile(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) {
+                                return SubCategoryPage(
+                                  category: card,
+                                  map: orario2ese,
+                                  indice: index,
+                                );
+                              },
+                            ),
+                          );
+                        },
+                        title: Text(
+                          'Allenamento ${index + 1} ',
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.w700),
+                        ),
+                        trailing: Text(
+                          "creato il:$card",
+                          style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 13,
+                              fontWeight: FontWeight.w700),
+                        ),
+                      ),
                     ),
                   );
                 },

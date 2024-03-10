@@ -121,16 +121,6 @@ class nuovoAllenamento_provider with ChangeNotifier {
     saveData();
   }
 
-  void dispose() {
-    // Esegui la pulizia della sessione qui
-    final DateTime sessionEndTime = DateTime.now();
-    final Duration sessionDuration =
-        sessionEndTime.difference(_sessionStartTime);
-    print('Fine della sessione: $sessionEndTime');
-    print('Durata della sessione: $sessionDuration');
-    // super.dispose();
-  }
-
   void setNEsercizi(int n) {
     this.nEsercizi = n;
   }

@@ -1,10 +1,10 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
-import 'package:progettomygimnuovo/providers/nuovaSessione_provider.dart';
+import 'package:progettomygimnuovo/providers/TabControllerProvider.dart';
+import 'package:progettomygimnuovo/providers/nuovaScheda_provider.dart';
 import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
 import 'package:progettomygimnuovo/providers/timer_provider.dart';
 import 'package:provider/provider.dart';
-
 
 import 'firebase_options.dart';
 import 'pages/PrimaPagina.dart';
@@ -23,12 +23,12 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => timer_provider()),
       ChangeNotifierProvider(create: (_) => nuovoAllenamento_provider()),
-      ChangeNotifierProvider(create: (_) => nuovaSessione_provider()),
+      ChangeNotifierProvider(create: (_) => nuovaScheda_provider()),
+      ChangeNotifierProvider(create: (_) => TabControllerProvider()),
     ],
     child: MyApp(),
   ));
 }
-
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});

@@ -1,9 +1,8 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_final_fields, unused_element
+// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_final_fields, unused_element, unused_local_variable
 
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class PaginaAllenamento extends StatefulWidget {
   const PaginaAllenamento({super.key});
@@ -13,7 +12,6 @@ class PaginaAllenamento extends StatefulWidget {
 }
 
 class _PaginaAllenamentoState extends State<PaginaAllenamento> {
-  List<String> rowsData = [];
   int numeroCard = 0;
   String nomeEsercizio = '';
   late DateTime sessionStartTime;
@@ -42,7 +40,7 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
     void dispose() {
       print("$sessionStartTime TEMPO ");
       final DateTime sessionEndTime = DateTime.now();
-      final Duration sessionDuration =
+      final Duration PsessionDuration =
           sessionEndTime.difference(sessionStartTime);
       super.dispose();
     }
@@ -55,10 +53,7 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
         child: Text(
           'AVVIA LA SESSIONE',
           style: TextStyle(
-            color: Colors.black,
-            fontSize: 20,
-            fontWeight: FontWeight.w700
-          ),
+              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
         ),
       );
     }
@@ -67,7 +62,6 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
-          // forceMaterialTransparency: true,
           leading: IconButton(
               onPressed: () {
                 Navigator.pushNamed(context, '/prima');
@@ -107,7 +101,6 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
                     },
                   );
                 }
-                // context.read<nuovoAllenamento_provider>().startSession();
               },
             ),
             SizedBox(height: 20),
@@ -116,7 +109,6 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
                     onPressed: () {
                       toccato = 0;
                       context.read<nuovoAllenamento_provider>().endSession();
-                      // context.read<nuovoAllenamento_provider>().rimuovi();
                     },
                     child: Text('END', style: TextStyle(color: Colors.white)),
                   )
@@ -126,7 +118,6 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
         body: builder(),
         floatingActionButton: FloatingActionButton(
           onPressed: () async {
-            // await saveData(sessionStartTime.toString());
             context.read<nuovoAllenamento_provider>().setContext(context);
             context.read<nuovoAllenamento_provider>().azzera();
             numeroCard++;
@@ -142,9 +133,3 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
     );
   }
 }
-
-
-// Future<void> saveData(String data) async {
-//   final prefs = await SharedPreferences.getInstance();
-//   await prefs.setString('nomeEsercizio', data);
-// }

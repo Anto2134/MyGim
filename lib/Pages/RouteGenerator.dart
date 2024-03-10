@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/Pages/PaginaAllenamento.dart';
+import 'package:progettomygimnuovo/Pages/PaginaNuovaScheda.dart';
+import 'package:progettomygimnuovo/Pages/PaginaSchede.dart';
 import 'package:progettomygimnuovo/services/AuthPage.dart';
+import 'package:progettomygimnuovo/widgets/scheda.dart';
 import 'PaginaErrore.dart';
 import 'PaginaMieiAllenamenti.dart';
 import 'PaginaTimer.dart';
 import 'PrimaPagina.dart';
-import 'DataStorageDemo.dart';
 
 class RouteGenerator {
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -24,10 +26,12 @@ class RouteGenerator {
 
       case '/allenamento':
         return MaterialPageRoute(builder: (context) => PaginaAllenamento());
-      
+
       case 'miei_allenamenti':
         return MaterialPageRoute(builder: (context) => PaginaMieiAllenamenti());
-        // return MaterialPageRoute(builder: (context) => DataStorageDemo());
+
+      case 'schede':
+        return MaterialPageRoute(builder: (context) => PaginaSchede());
 
       default:
         return MaterialPageRoute(builder: (context) => PaginaErrore());
