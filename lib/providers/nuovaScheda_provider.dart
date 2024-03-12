@@ -3,6 +3,7 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:progettomygimnuovo/widgets/scheda.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/scheda.dart';
@@ -20,6 +21,7 @@ class nuovaScheda_provider with ChangeNotifier {
   Map<String, List<String>> tab2esercizio = {};
   List<String> esercizio = [];
   List<String> tabTitles = [];
+  // late scheda nuova;
   
 
 
@@ -87,6 +89,8 @@ class nuovaScheda_provider with ChangeNotifier {
       actions: [
         IconButton(
             onPressed: () {
+              tab2esercizio = {};
+              tabTitles = [];
               nuova.setNome(textFieldController.text);
               schede.add(nuova);
               if (formKey.currentState!.validate()) {
@@ -105,7 +109,7 @@ class nuovaScheda_provider with ChangeNotifier {
     );
   }
 
-  AlertDialog generaForm2(String titolo) {
+  AlertDialog generaForm2(String titolo, scheda scheda) {
     return AlertDialog(
       scrollable: true,
       content: Form(
@@ -130,8 +134,12 @@ class nuovaScheda_provider with ChangeNotifier {
               esercizio.add(textFieldControllerEs.text);
               // tab2esercizio[titolo] = esercizio;
               tab2esercizio[titolo]?.add(textFieldControllerEs.text);
+              scheda.setMap(tab2esercizio);
+              scheda.setTab(tabTitles);
+              // nuova.setMap(tab2esercizio);
               notifyListeners();
               Navigator.pop(context!);
+              // tab2esercizio = {};
             },
             icon: Icon(Icons.close))
       ],
