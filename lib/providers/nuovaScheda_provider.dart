@@ -23,6 +23,7 @@ class nuovaScheda_provider with ChangeNotifier {
   Map<String, List<String>> tab2esercizio = {};
   Map<String, Map<String, List<String>>> map = {};
   Map<String, List<String>> nome2esee = {};
+  Map<String, List<String>> ese2serie = {};
   List<String> esercizio = [];
   List<String> tabTitles = [];
   // late scheda nuova;
@@ -85,11 +86,11 @@ class nuovaScheda_provider with ChangeNotifier {
               tabTitles = [];
               map = {};
               nome2esee = {};
-              // nuova.setData(tab, ese)
+              // nuova.setData(tab, ese);
               nuova.setNome(textFieldController.text);
               nuova.setMap(tab2esercizio);
               nuova.setTab(tabTitles);
-              // nuova.setF(map);
+              nuova.setF(map);
               // nuova.setNome2serie(nome2esee);
               schede.add(nuova);
               if (formKey.currentState!.validate()) {
@@ -149,15 +150,23 @@ class nuovaScheda_provider with ChangeNotifier {
               // esercizio.add(textFieldControllerEs.text);
               // tab2esercizio[titolo] = esercizio;
               // tab2esercizio[titolo]?.add(textFieldControllerEs.text);
-              scheda.addDati(titolo, textFieldControllerEs.text);
+              // scheda.addDati(titolo, textFieldControllerEs.text);
+              // List<String> app = [];
+              // app.add(textFieldControllerEs.text);
+              // ese2serie[textFieldControllerEs.text] = app;
+              print('object' + ese2serie.toString());
               // scheda.setData(titolo, textFieldControllerEs.text,
                   // textFieldControllerSerie.text);
+                  // scheda.setDati(titolo, ese2serie);
+                  scheda.addDati(titolo, textFieldControllerEs.text, textFieldControllerSerie.text);
+                  // app.clear();
               // scheda.setMap();
               // scheda.addDati(titolo, textFieldControllerSerie.text);
               // scheda.setMap(tab2esercizio);
               // scheda.setTab(tabTitles);
               // nuova.setMap(tab2esercizio);
               notifyListeners();
+              // app.clear();
               Navigator.pop(context!);
               azzera();
               // tab2esercizio = {};
@@ -187,8 +196,13 @@ class nuovaScheda_provider with ChangeNotifier {
       actions: [
         IconButton(
             onPressed: () {
-              scheda.addTab(textFieldControllerTab.text);
+              scheda.addNewTab(textFieldControllerTab.text);
+              ese2serie.clear();
+              // scheda.reset(textFieldControllerTab.text);
               // scheda.setData(textFieldControllerTab.text, "", "");
+              // scheda.setF({});
+              // scheda.map[textFieldControllerTab.text] = {};
+              // scheda.nome2serie = {};
               notifyListeners();
               Navigator.pop(context!);
               textFieldControllerTab.text = "";

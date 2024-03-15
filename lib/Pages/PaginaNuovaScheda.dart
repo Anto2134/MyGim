@@ -3,6 +3,8 @@ import 'package:progettomygimnuovo/providers/nuovaScheda_provider.dart';
 import 'package:progettomygimnuovo/widgets/scheda.dart';
 import 'package:provider/provider.dart';
 
+import '../widgets/tab.dart';
+
 class PaginaNuovaScheda extends StatefulWidget {
   final scheda card;
   const PaginaNuovaScheda({Key? key, required this.card}) : super(key: key);
@@ -17,6 +19,8 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
   Map<String, List<String>> tabData = {};
   late TabController tabController;
   int currentIndex = 0;
+  List<String> chiavi = [];
+  List<tab> tabs = [];
 
   @override
   void initState() {
@@ -30,6 +34,7 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
     // } else {
     tabData = widget.card.getMap();
     tabTitles = widget.card.getTab();
+    tabs = widget.card.getTabs();
     tabController = TabController(length: tabTitles.length, vsync: this);
     Provider.of<nuovaScheda_provider>(context, listen: false)
         .addListener(_updateTabController);
@@ -60,6 +65,8 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
         tabData = widget.card.getMap();
         tabTitles = widget.card.getTab();
         tabController.dispose();
+        tabs = widget.card.getTabs();
+
         tabController = TabController(length: tabTitles.length, vsync: this);
         // }
       });
@@ -89,9 +96,23 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
     );
   }
 
+  int prendi(String tab) {
+    Map<String, List<String>>? app = widget.card.getMapF(tab);
+    chiavi = app!.keys.toList();
+    return app.length;
+  }
+
   List<Widget> returnTabs() {
     // if (widget.card.getTab().isNotEmpty) {
-    return widget.card.getTab().map((title) => Tab(text: title)).toList();
+    return widget.card
+        .getTabs()
+        .map((tab) => Tab(text: tab.getTitolo()))
+        .toList();
+    // return widget.card.getMaps().keys.map(
+    //   (String tab) {
+    //     return Tab(text: tab);
+    //   },
+    // ).toList();
     // } else {
     //   return context
     //       .read<nuovaScheda_provider>()
@@ -115,63 +136,68 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
     //     return ListView.builder(
     //       itemCount: tabDataa.length,
     //       itemBuilder: (context, index) {
-    //         return ListTile(title: Text(tabDataa[index]));
+    //         return ListTile(
+    //             title: Text(
+    //           tabDataa[index],
+    //           style: TextStyle(color: Colors.red),
+    //         ));
     //       },
     //     );
     //   },
-    // ).toList());
     return TabBarView(
-        children: widget.card.getTab().map(
-      (title) {
-        // Map<String, List<String>>? appes = widget.card.getMapF(title);
-        // Map<String, Map<String, List<String>>> app = widget.card.getMapF();
-        // final tabData = appes![title] ?? [];
-        Map<String, List<String>> app = widget.card.getMap();
-        final tabData = app[title] ?? [];
+        children: widget.card.getTabs().map(
+      (tab) {
         return ListView.builder(
-          itemCount: tabData.length,
-          // itemCount:
+          itemCount: tab.getMap().length,
           itemBuilder: (context, index) {
-            // return ListTile(title: Text(tabData[index]));
+            String sotto = tab.getMap().keys.toList()[index];
             return ListTile(
-                title: Text(
-              tabData[index],
-              style: TextStyle(color: Colors.red),
-            ));
+              title: Text(sotto),
+            );
           },
         );
       },
     ).toList());
-    // } else {
-    //   return TabBarView(
-    //     children: context.read<nuovaScheda_provider>().tabTitles.map((title) {
-    //       final tabDataa =
-    //           context.read<nuovaScheda_provider>().tab2esercizio[title] ?? [];
-    //       return ListView.builder(
-    //         itemCount: tabDataa.length,
-    //         itemBuilder: (context, index) {
-    //           return ListTile(
-    //             title: Text(tabDataa[index]),
-    //           );
-    //         },
-    //       );
-    //     }).toList(),
-    //   );
-    // }
+    // ).toList());
+    // Map<String, Map<String, List<String>>> mappa = widget.card.getMaps();
+    // return TabBarView(
+    //     // children: widget.card.getTab().map(
+    //     children: mappa.keys.map(
+    //   (String title) {
+    //     Map<String, List<String>>? mappa2 = mappa[title];
+    //     return ListView(
+    //         children: mappa2!.keys.map(
+    //       (String esercizio) {
+    //         List<String>? esercizi = mappa2[esercizio];
+    //         return ListTile(
+    //           title: Text(esercizio),
+    //           subtitle: Column(
+    //             children: esercizi!.map((String dato) {
+    //               return Text(dato);
+    //             }).toList(),
+    //           ),
+    //         );
+    //       },
+    //     ).toList(growable: true));
+    //   },
+    // ).toList(growable: true));
+    // return TabBarView(children: mappa.keys.map((String title) {
+    //   // Map<String, List<String>>? mappa2 = mappa[title];
+    //   return ListView.builder(itemCount: mappa[title]!.length,itemBuilder: (context, index) {
+    //     String sotto = mappa[title]!.keys.toList()[index];
+    //     List<String> dati = mappa[title]![sotto]!;
+    //     return ListTile(title: Text(sotto),);
+    //   },);
+    // },).toList());
   }
 
   @override
   Widget build(BuildContext context) {
     int returnLength() {
-      // if (widget.card.getTab().length != 0) {
-      return widget.card.getTab().length;
-      // } else {
-      //   return context.read<nuovaScheda_provider>().tabTitles.length;
-      // }
+      return widget.card.getTabs().length;
     }
 
     return DefaultTabController(
-      // length: context.read<nuovaScheda_provider>().tabTitles.length,
       length: returnLength(),
       child: Scaffold(
         backgroundColor: Colors.blue,
@@ -198,7 +224,8 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
         ),
         body: Consumer<nuovaScheda_provider>(
           builder: (context, provider, _) {
-            String currentTab = "";
+            // String currentTab = "";
+            tab currentTab;
             return Column(
               children: [
                 TabBar(
@@ -207,7 +234,8 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
                     if (mounted) {
                       setState(() {
                         currentIndex = index;
-                        currentTab = tabTitles[currentIndex];
+                        currentTab = tabs[currentIndex];
+                        // currentTab = tabTitles[currentIndex];
                         print(currentIndex);
                         print(index);
                       });
@@ -253,7 +281,8 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
             // String currentTab = context.read<nuovaScheda_provider>().tabTitles[currentIndex];
             // int currentIndex = tabController.index;
             print('current + $currentIndex');
-            String currentTab = tabTitles[currentIndex];
+            // String currentTab = tabTitles[currentIndex];
+            String currentTab = tabs[currentIndex].getTitolo();
             showFormDialog(context, currentTab);
           },
           child: Icon(Icons.add),
