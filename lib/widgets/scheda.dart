@@ -4,10 +4,26 @@ class scheda {
   // Map<String, int> esercizi2nSerie = {};
   // Map<String, List<String>> esercizi2nSerie = {};
   Map<String, List<String>> tab2esercizi = {};
+  // Map<String, List<String>> nome2serie = {};
+  // Map<String, Map<String, List<String>>> map = {};
   List<String> tabTitles = [];
 
   scheda();
 
+  // Map<String, List<String>> getNome2serie(){
+  //   return this.nome2serie;
+  // }
+
+  // Map<String, List<String>>? getMapF(String title){
+  //   return map[title];
+  // }
+  // void setF(Map<String, Map<String, List<String>>> map){
+  //   this.map = map;
+  // }
+
+  // void setNome2serie(Map<String, List<String>> nome2nserie){
+  //   this.nome2serie = nome2nserie;
+  // }
   void setNome(String nome) {
     this.nome = nome;
   }
@@ -28,13 +44,23 @@ class scheda {
     this.tab2esercizi = tab2esercizi;
   }
 
+  // void setData(String tab, String esercizio, String serie){
+  //   nome2serie[esercizio]?.add(serie);
+  //   map[tab] = nome2serie;
+  // }
+
+  void addDati(String tab, String dati){
+    tab2esercizi[tab]?.add(dati);
+  }
+
   List<String> getTab() {
     return this.tabTitles;
   }
 
-  void addTab() {
-    final title = 'Tab ${tabTitles.length + 1}';
+  void addTab(String title) {
+    // final title = 'Tab ${tabTitles.length + 1}';
     tabTitles.add(title);
+    tab2esercizi[title] = [];
   }
 
   String getNome() {

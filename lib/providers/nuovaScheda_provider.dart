@@ -11,7 +11,9 @@ import '../widgets/scheda.dart';
 class nuovaScheda_provider with ChangeNotifier {
   TextEditingController textFieldController = TextEditingController();
   TextEditingController textFieldControllerEs = TextEditingController();
+  TextEditingController textFieldControllerTab = TextEditingController();
   TextEditingController textFieldControllerNumero = TextEditingController();
+  TextEditingController textFieldControllerSerie = TextEditingController();
   // List<String> schede = [];
   BuildContext? context;
   List<scheda> schede = [];
@@ -19,16 +21,19 @@ class nuovaScheda_provider with ChangeNotifier {
   String nome = '';
   String titolo = '';
   Map<String, List<String>> tab2esercizio = {};
+  Map<String, Map<String, List<String>>> map = {};
+  Map<String, List<String>> nome2esee = {};
   List<String> esercizio = [];
   List<String> tabTitles = [];
   // late scheda nuova;
-  
 
-
-  void addTab() {
+  void addTab(scheda card) {
     final title = 'Tab ${tabTitles.length + 1}';
-    tabTitles.add(title);
+    // tabTitles.add(title);
+    // card.addTab();
     tab2esercizio[title] = [];
+    // card.setTab(tabTitles);
+    // tabTitles = [];
     notifyListeners();
   }
 
@@ -71,19 +76,6 @@ class nuovaScheda_provider with ChangeNotifier {
                   return null;
                 },
               ),
-              TextFormField(
-                controller: textFieldControllerNumero,
-                keyboardType: TextInputType.number,
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    return 'Scrivi il numero di giorni';
-                  }
-                  notifyListeners();
-                  return null;
-                },
-                decoration: InputDecoration(
-                    labelText: 'In quanti giorni vuoi dividere la scheda?'),
-              ),
             ],
           )),
       actions: [
@@ -91,7 +83,14 @@ class nuovaScheda_provider with ChangeNotifier {
             onPressed: () {
               tab2esercizio = {};
               tabTitles = [];
+              map = {};
+              nome2esee = {};
+              // nuova.setData(tab, ese)
               nuova.setNome(textFieldController.text);
+              nuova.setMap(tab2esercizio);
+              nuova.setTab(tabTitles);
+              // nuova.setF(map);
+              // nuova.setNome2serie(nome2esee);
               schede.add(nuova);
               if (formKey.currentState!.validate()) {
                 int? parsedNumber =
@@ -102,11 +101,16 @@ class nuovaScheda_provider with ChangeNotifier {
               }
               notifyListeners();
               // schede.add(textFieldController.text);
+              textFieldController.text = "";
               Navigator.pop(context!);
             },
             icon: Icon(Icons.done))
       ],
     );
+  }
+
+  void azzera() {
+    textFieldControllerEs.text = '';
   }
 
   AlertDialog generaForm2(String titolo, scheda scheda) {
@@ -125,21 +129,70 @@ class nuovaScheda_provider with ChangeNotifier {
               notifyListeners();
               return null;
             },
-          )
+          ),
+          TextFormField(
+            controller: textFieldControllerSerie,
+            decoration: InputDecoration(labelText: 'quante serie vuoi fare?'),
+            validator: (value) {
+              if (value!.isEmpty) {
+                return 'scrivi numero serie';
+              }
+              notifyListeners();
+              return null;
+            },
+          ),
         ],
       )),
       actions: [
         IconButton(
             onPressed: () {
-              esercizio.add(textFieldControllerEs.text);
+              // esercizio.add(textFieldControllerEs.text);
               // tab2esercizio[titolo] = esercizio;
-              tab2esercizio[titolo]?.add(textFieldControllerEs.text);
-              scheda.setMap(tab2esercizio);
-              scheda.setTab(tabTitles);
+              // tab2esercizio[titolo]?.add(textFieldControllerEs.text);
+              scheda.addDati(titolo, textFieldControllerEs.text);
+              // scheda.setData(titolo, textFieldControllerEs.text,
+                  // textFieldControllerSerie.text);
+              // scheda.setMap();
+              // scheda.addDati(titolo, textFieldControllerSerie.text);
+              // scheda.setMap(tab2esercizio);
+              // scheda.setTab(tabTitles);
               // nuova.setMap(tab2esercizio);
               notifyListeners();
               Navigator.pop(context!);
+              azzera();
               // tab2esercizio = {};
+            },
+            icon: Icon(Icons.close))
+      ],
+    );
+  }
+
+  AlertDialog generaFormTab(scheda scheda) {
+    return AlertDialog(
+      scrollable: true,
+      content: Form(
+          child: TextFormField(
+        controller: textFieldControllerTab,
+        decoration: InputDecoration(
+          labelText: 'gruppi da allenare',
+        ),
+        validator: (value) {
+          if (value!.isEmpty) {
+            return 'scrivi il nome dei gruppi che vuoi allenare';
+          }
+          notifyListeners();
+          return null;
+        },
+      )),
+      actions: [
+        IconButton(
+            onPressed: () {
+              scheda.addTab(textFieldControllerTab.text);
+              // scheda.setData(textFieldControllerTab.text, "", "");
+              notifyListeners();
+              Navigator.pop(context!);
+              textFieldControllerTab.text = "";
+              // azzera();
             },
             icon: Icon(Icons.close))
       ],
