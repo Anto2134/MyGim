@@ -43,7 +43,7 @@ class _MyAppState extends State<MyApp> {
     return MaterialApp(
         theme: ThemeData(
           colorScheme: ColorScheme.fromSwatch(
-            primarySwatch: Colors.blueGrey,
+            primarySwatch: Colors.red,
             accentColor: Colors.red,
             backgroundColor: Colors.white,
             errorColor: Colors.red,

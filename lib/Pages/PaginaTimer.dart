@@ -95,10 +95,10 @@ class _PaginaTimerState extends State<PaginaTimer> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData.from(
-          colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)),
-      home: Scaffold(
+    // return MaterialApp(
+      // theme: ThemeData.from(
+      // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)),
+      return Scaffold(
         appBar: AppBar(
           forceMaterialTransparency: true,
           backgroundColor: coloreSchermata(),
@@ -108,7 +108,7 @@ class _PaginaTimerState extends State<PaginaTimer> {
               },
               icon: Icon(
                 Icons.arrow_back,
-                color: Colors.black,
+                color: Colors.white,
               )),
         ),
         backgroundColor: coloreSchermata(),
@@ -124,6 +124,18 @@ class _PaginaTimerState extends State<PaginaTimer> {
             ],
           ),
         ),
+        // floatingActionButton: FloatingActionButton(
+        //     onPressed: () {
+        //       _showTimePicker(context);
+        //       context.read<timer_provider>().azzeraStartato();
+        //     },
+        //     child: Text(
+        //       'SELECT TIME',
+        //       style: TextStyle(
+        //           fontWeight: FontWeight.w800,
+        //           color: Colors.white,
+        //           fontSize: 15),
+        //     )),
         floatingActionButton: ElevatedButton(
             onPressed: () {
               _showTimePicker(context);
@@ -136,8 +148,8 @@ class _PaginaTimerState extends State<PaginaTimer> {
                   color: Colors.white,
                   fontSize: 15),
             )),
-      ),
-    );
+      );
+    // );
   }
 
   Color coloreSchermata() {
@@ -146,19 +158,19 @@ class _PaginaTimerState extends State<PaginaTimer> {
         return Colors.red;
       }
       if (context.watch<timer_provider>().tempo_secondi == 4) {
-        return Colors.white;
+        return Colors.black;
       }
       if (context.watch<timer_provider>().tempo_secondi == 3) {
         return Colors.red;
       }
       if (context.watch<timer_provider>().tempo_secondi == 2) {
-        return Colors.white;
+        return Colors.black;
       }
       if (context.watch<timer_provider>().tempo_secondi == 1) {
         return Colors.red;
       }
     }
-    return Colors.white;
+    return Colors.black;
   }
 
   Widget buildButtons() {
@@ -254,14 +266,15 @@ class _PaginaTimerState extends State<PaginaTimer> {
     }
     return Text(
       'Avvia Cronometro',
-      style: TextStyle(color: Colors.black,fontWeight: FontWeight.w700),
+      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
     );
   }
 
   Widget buildTime() {
     return Text(
       '${context.watch<timer_provider>().tempo_secondi}',
-      style: TextStyle(fontSize: 50, color: Colors.black,fontWeight: FontWeight.w900),
+      style: TextStyle(
+          fontSize: 50, color: Colors.white, fontWeight: FontWeight.w900),
     );
   }
 }
