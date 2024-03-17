@@ -37,16 +37,21 @@ class _PaginaSchedeState extends State<PaginaSchede> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('le mie schede'),
+        backgroundColor: Colors.black,
+        title: const Text(
+          'Le mie schede',
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.w900, fontSize: 25),
+        ),
       ),
-      floatingActionButton: IconButton(
-        color: Colors.red,
+      floatingActionButton: FloatingActionButton(
         onPressed: () {
           showFormDialog();
         },
-        icon: const Icon(
-          Icons.add,
-          color: Colors.red,
+        backgroundColor: Colors.amberAccent[400],
+        child: Icon(
+          Icons.add_to_photos_sharp,
+          color: Colors.black,
         ),
       ),
       body: ListView.builder(

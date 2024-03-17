@@ -7,6 +7,7 @@ import 'package:progettomygimnuovo/widgets/scheda.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../widgets/scheda.dart';
+import '../widgets/tab.dart';
 
 class nuovaScheda_provider with ChangeNotifier {
   TextEditingController textFieldController = TextEditingController();
@@ -26,7 +27,8 @@ class nuovaScheda_provider with ChangeNotifier {
   Map<String, List<String>> ese2serie = {};
   List<String> esercizio = [];
   List<String> tabTitles = [];
-  // late scheda nuova;
+  List<tab> tabs = [];
+  Map<scheda, List<tab>> scheda2tabs = {};
 
   void addTab(scheda card) {
     final title = 'Tab ${tabTitles.length + 1}';
@@ -88,9 +90,9 @@ class nuovaScheda_provider with ChangeNotifier {
               nome2esee = {};
               // nuova.setData(tab, ese);
               nuova.setNome(textFieldController.text);
-              nuova.setMap(tab2esercizio);
-              nuova.setTab(tabTitles);
-              nuova.setF(map);
+              // nuova.setMap(tab2esercizio);
+              // nuova.setTab(tabTitles);
+              // nuova.setF(map);
               // nuova.setNome2serie(nome2esee);
               schede.add(nuova);
               if (formKey.currentState!.validate()) {
@@ -156,10 +158,11 @@ class nuovaScheda_provider with ChangeNotifier {
               // ese2serie[textFieldControllerEs.text] = app;
               print('object' + ese2serie.toString());
               // scheda.setData(titolo, textFieldControllerEs.text,
-                  // textFieldControllerSerie.text);
-                  // scheda.setDati(titolo, ese2serie);
-                  scheda.addDati(titolo, textFieldControllerEs.text, textFieldControllerSerie.text);
-                  // app.clear();
+              // textFieldControllerSerie.text);
+              // scheda.setDati(titolo, ese2serie);
+              scheda.addDati(titolo, textFieldControllerEs.text,
+                  textFieldControllerSerie.text);
+              // app.clear();
               // scheda.setMap();
               // scheda.addDati(titolo, textFieldControllerSerie.text);
               // scheda.setMap(tab2esercizio);

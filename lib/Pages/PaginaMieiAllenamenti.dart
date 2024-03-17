@@ -14,7 +14,6 @@ class PaginaMieiAllenamenti extends StatefulWidget {
 }
 
 class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
-  final List<String> list = ['c1', 'c2'];
   List<String> dati = [];
   Map<String, Map<String, List<String>>> orario2ese = {};
 
@@ -25,10 +24,6 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
     for (String s in orario2ese.keys) {
       dati.add(s);
     }
-  }
-
-  Future<void> loadMap() async {
-    orario2ese = await context.read<nuovoAllenamento_provider>().loadMap();
   }
 
   void dismissCard(String id) {
