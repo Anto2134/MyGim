@@ -55,7 +55,7 @@ class _MyAppState extends State<MyApp> {
             if (snapshot.hasData) {
               return const PrimaPagina();
             } else {
-              return const AuthPage();
+              return AuthPage();
             }
           },
         ),

@@ -96,77 +96,51 @@ class _PaginaTimerState extends State<PaginaTimer> {
   @override
   Widget build(BuildContext context) {
     // return MaterialApp(
-      // theme: ThemeData.from(
-      // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)),
-      return Scaffold(
-        appBar: AppBar(
-          forceMaterialTransparency: true,
-          backgroundColor: coloreSchermata(),
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/prima');
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.white,
-              )),
-        ),
+    // theme: ThemeData.from(
+    // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)),
+    return Scaffold(
+      appBar: AppBar(
+        forceMaterialTransparency: true,
         backgroundColor: coloreSchermata(),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              buildTimer(),
-              SizedBox(
-                height: 80,
-              ),
-              buildButtons(),
-            ],
-          ),
-        ),
-        // floatingActionButton: FloatingActionButton(
-        //     onPressed: () {
-        //       _showTimePicker(context);
-        //       context.read<timer_provider>().azzeraStartato();
-        //     },
-        //     child: Text(
-        //       'SELECT TIME',
-        //       style: TextStyle(
-        //           fontWeight: FontWeight.w800,
-        //           color: Colors.white,
-        //           fontSize: 15),
-        //     )),
-        floatingActionButton: ElevatedButton(
+        leading: IconButton(
             onPressed: () {
-              _showTimePicker(context);
-              context.read<timer_provider>().azzeraStartato();
+              Navigator.pushNamed(context, '/prima');
             },
-            child: Text(
-              'SELECT TIME',
-              style: TextStyle(
-                  fontWeight: FontWeight.w800,
-                  color: Colors.white,
-                  fontSize: 15),
+            icon: Icon(
+              Icons.arrow_back,
+              color: Colors.white,
             )),
-      );
-    // );
+      ),
+      backgroundColor: coloreSchermata(),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            buildTimer(),
+            SizedBox(
+              height: 80,
+            ),
+            buildButtons(),
+          ],
+        ),
+      ),
+      floatingActionButton: ElevatedButton(
+          onPressed: () {
+            _showTimePicker(context);
+            context.read<timer_provider>().azzeraStartato();
+          },
+          child: Text(
+            'SELECT TIME',
+            style: TextStyle(
+                fontWeight: FontWeight.w800, color: Colors.white, fontSize: 15),
+          )),
+    );
   }
 
   Color coloreSchermata() {
     if (context.watch<timer_provider>().count_startato == 1) {
-      if (context.watch<timer_provider>().tempo_secondi == 5) {
-        return Colors.red;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 4) {
-        return Colors.black;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 3) {
-        return Colors.red;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 2) {
-        return Colors.black;
-      }
-      if (context.watch<timer_provider>().tempo_secondi == 1) {
+      if (context.watch<timer_provider>().tempo_secondi % 2 != 0 &&
+          context.watch<timer_provider>().tempo_secondi <= 5) {
         return Colors.red;
       }
     }
@@ -214,9 +188,15 @@ class _PaginaTimerState extends State<PaginaTimer> {
                 showDialog(
                   context: context,
                   builder: (context) => Dialog(
-                    child: Text(
-                      'Seleziona il tempo',
-                      style: TextStyle(fontWeight: FontWeight.w700),
+                    child: Card(
+                      color: Colors.white,
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(20)),
+                      child: Text(
+                        'Seleziona il tempo',
+                        style: TextStyle(
+                            fontWeight: FontWeight.bold, fontSize: 15),
+                      ),
                     ),
                   ),
                 );
@@ -265,8 +245,9 @@ class _PaginaTimerState extends State<PaginaTimer> {
       buildTime();
     }
     return Text(
-      'Avvia Cronometro',
-      style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+      '0',
+      style: TextStyle(
+          color: Colors.white, fontWeight: FontWeight.bold, fontSize: 50),
     );
   }
 
