@@ -1,5 +1,3 @@
-// ignore_for_file: prefer_const_constructors, prefer_const_literals_to_create_immutables, avoid_unnecessary_containers, prefer_final_fields, unused_element, unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/providers/nuovoAllenamento_provider.dart';
 import 'package:provider/provider.dart';
@@ -23,112 +21,183 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
     sessionStartTime = DateTime.now();
   }
 
-  @override
-  Widget build(BuildContext context) {
-    void initState() {
-      super.initState();
-    }
+  void _showFormDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return Dialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          child: Container(
+            decoration: BoxDecoration(
+              gradient: const LinearGradient(
+                colors: [Colors.black, Colors.red],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.redAccent.withOpacity(0.5),
+                  spreadRadius: 5,
+                  blurRadius: 7,
+                  offset: const Offset(0, 3),
+                ),
+              ],
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: context.watch<nuovoAllenamento_provider>().generaForm(),
+            ),
+          ),
+        );
+      },
+    );
+  }
 
-    void showFormDialog() {
-      showDialog(
-          context: context,
-          builder: (context) {
-            return context.watch<nuovoAllenamento_provider>().generaForm();
-          });
-    }
+  void _showStartSessionDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
+          ),
+          title: const Text(
+            "Inizia Sessione",
+            style: TextStyle(fontWeight: FontWeight.bold),
+          ),
+          content: const Text("Vuoi iniziare una nuova sessione?"),
+          actions: [
+            TextButton(
+              onPressed: () {
+                toccato = 0;
+                Navigator.of(context).pop();
+              },
+              child: const Text('No'),
+            ),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: Colors.red,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(20),
+                ),
+              ),
+              onPressed: () {
+                context.read<nuovoAllenamento_provider>().startSession();
+                Navigator.of(context).pop();
+              },
+              child: const Text('Si'),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-    void dispose() {
-      print("$sessionStartTime TEMPO ");
-      final DateTime sessionEndTime = DateTime.now();
-      final Duration PsessionDuration =
-          sessionEndTime.difference(sessionStartTime);
-      super.dispose();
+  Widget? _buildBody() {
+    if (context.read<nuovoAllenamento_provider>().isSessionActive) {
+      return context.watch<nuovoAllenamento_provider>().list_v;
     }
-
-    Widget? builder() {
-      if (context.read<nuovoAllenamento_provider>().isSessionActive) {
-        return context.watch<nuovoAllenamento_provider>().list_v;
-      }
-      return Center(
+    return Container(
+      decoration: const BoxDecoration(
+        gradient: LinearGradient(
+          colors: [Colors.red, Colors.black],
+          begin: Alignment.topCenter,
+          end: Alignment.bottomCenter,
+        ),
+      ),
+      child: const Center(
         child: Text(
           'AVVIA LA SESSIONE',
           style: TextStyle(
-              color: Colors.black, fontSize: 20, fontWeight: FontWeight.w700),
+            color: Colors.white,
+            fontSize: 22,
+            fontWeight: FontWeight.w900,
+          ),
         ),
-      );
-    }
+      ),
+    );
+  }
 
+  @override
+  Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
           backgroundColor: Colors.black,
+          elevation: 5,
+          centerTitle: true,
+          title: const Text(
+            'Allenamento',
+            style: TextStyle(color: Colors.white, fontWeight: FontWeight.bold),
+          ),
           leading: IconButton(
-              onPressed: () {
-                Navigator.pushNamed(context, '/prima');
-              },
-              icon: Icon(
-                Icons.arrow_back,
-                color: Colors.red,
-              )),
+            onPressed: () {
+              Navigator.pushNamed(context, '/prima');
+            },
+            icon: const Icon(
+              Icons.arrow_back,
+              color: Colors.white,
+            ),
+          ),
           actions: [
             IconButton(
-              icon: Icon(Icons.play_arrow),
+              icon: const Icon(Icons.play_arrow, color: Colors.white),
               onPressed: () {
                 if (toccato == 0) {
                   toccato++;
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return AlertDialog(
-                        content: Text("Vuoi iniziare una nuova sessione?"),
-                        actions: [
-                          TextButton(
-                              onPressed: () {
-                                toccato = 0;
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('No')),
-                          TextButton(
-                              onPressed: () {
-                                context
-                                    .read<nuovoAllenamento_provider>()
-                                    .startSession();
-                                Navigator.of(context).pop();
-                              },
-                              child: Text('Si')),
-                        ],
-                      );
-                    },
-                  );
+                  _showStartSessionDialog();
                 }
               },
             ),
-            SizedBox(height: 20),
+            const SizedBox(height: 20),
             context.watch<nuovoAllenamento_provider>().isSessionActive
                 ? TextButton(
                     onPressed: () {
                       toccato = 0;
                       context.read<nuovoAllenamento_provider>().endSession();
                     },
-                    child: Text('END', style: TextStyle(color: Colors.white)),
+                    child: const Text(
+                      'END',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   )
                 : Container(),
           ],
         ),
-        body: builder(),
-        floatingActionButton: FloatingActionButton(
-          onPressed: () async {
-            context.read<nuovoAllenamento_provider>().setContext(context);
-            context.read<nuovoAllenamento_provider>().azzera();
-            numeroCard++;
-            context.read<nuovoAllenamento_provider>().setNEsercizi(numeroCard);
-            showFormDialog();
-          },
-          backgroundColor: Colors.red,
-          child: Icon(
-            Icons.add,
+        body: Container(
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.black, Colors.black],
+              begin: Alignment.topLeft,
+              end: Alignment.bottomRight,
+            ),
           ),
+          child: _buildBody(),
         ),
+        floatingActionButton: context
+                .watch<nuovoAllenamento_provider>()
+                .isSessionActive
+            ? FloatingActionButton(
+                onPressed: () async {
+                  context.read<nuovoAllenamento_provider>().setContext(context);
+                  context.read<nuovoAllenamento_provider>().azzera();
+                  numeroCard++;
+                  context
+                      .read<nuovoAllenamento_provider>()
+                      .setNEsercizi(numeroCard);
+                  _showFormDialog();
+                },
+                backgroundColor: Colors.red,
+                child: const Icon(
+                  Icons.add,
+                  color: Colors.white,
+                ),
+              )
+            : null,
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       ),
     );
   }

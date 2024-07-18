@@ -1,141 +1,10 @@
-// // ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names
 
-// import 'package:flutter/material.dart';
-// import 'package:progettomygimnuovo/services/Auth.dart';
-// import 'package:provider/provider.dart';
-
-// import '../providers/timer_provider.dart';
-// import '../widgets/card_allenamento.dart';
-// import '../widgets/card_miei_allenamenti.dart';
-// import '../widgets/card_schede.dart';
-
-// class PrimaPagina extends StatefulWidget {
-//   const PrimaPagina({super.key});
-
-//   @override
-//   State<PrimaPagina> createState() => _PrimaPaginaState();
-// }
-
-// class _PrimaPaginaState extends State<PrimaPagina> {
-//   Widget verifica_tempo() {
-//     if (context.watch<timer_provider>().tempo_secondi == 0)
-//       return Container(
-//         height: 2,
-//         color: Colors.black,
-//       );
-//     return Text(
-//       '${context.watch<timer_provider>().tempo_secondi}',
-//       style: TextStyle(
-//         color: coloreNumero(),
-//         fontWeight: FontWeight.w600,
-//       ),
-//     );
-//   }
-
-//   Future<void> signOut() async {
-//     Auth().signOut();
-//   }
-
-//   Future<void> _showLogoutConfirmationDialog() async {
-//     return showDialog<void>(
-//       context: context,
-//       barrierDismissible: false, // L'utente deve confermare o annullare
-//       builder: (BuildContext context) {
-//         return AlertDialog(
-//           title: Text('Conferma Logout'),
-//           content: SingleChildScrollView(
-//             child: ListBody(
-//               children: <Widget>[
-//                 Text('Sei sicuro di voler effettuare il logout?'),
-//               ],
-//             ),
-//           ),
-//           actions: <Widget>[
-//             TextButton(
-//               child: Text('Annulla'),
-//               onPressed: () {
-//                 Navigator.of(context).pop(); // Chiude il dialogo
-//               },
-//             ),
-//             TextButton(
-//               child: Text('Conferma'),
-//               onPressed: () {
-//                 Navigator.of(context).pop(); // Chiude il dialogo
-//                 signOut(); // Effettua il logout
-//               },
-//             ),
-//           ],
-//         );
-//       },
-//     );
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       appBar: AppBar(
-//         leading: verifica_tempo(),
-//         backgroundColor: Colors.black,
-//         centerTitle: true,
-//         title: Text(
-//           'MYHOMEGYM',
-//           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
-//         ),
-//         actions: [
-//           IconButton(
-//               onPressed: () {
-//                 // signOut();
-//                 _showLogoutConfirmationDialog();
-//               },
-//               icon: Icon(
-//                 Icons.logout_outlined,
-//                 color: Colors.white,
-//               ))
-//         ],
-//       ),
-//       body: Scrollbar(
-//         thumbVisibility: true,
-//         trackVisibility: true,
-//         thickness: 5,
-//         child: ListView(
-//           children: [
-//             Padding(
-//               padding: EdgeInsets.symmetric(vertical: 10),
-//               child: Column(
-//                 children: [
-//                   const card_allenamento(),
-//                   const card_miei_allenamenti(),
-//                   const card_schede(),
-//                 ],
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//       backgroundColor: Colors.white,
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: () {
-//           Navigator.pushNamed(context, '/orologio');
-//         },
-//         child: Icon(Icons.timer_sharp),
-//       ),
-//     );
-//   }
-
-//   Color coloreNumero() {
-//     if (context.watch<timer_provider>().count_startato == 1) {
-//       if (context.watch<timer_provider>().tempo_secondi % 2 != 0 &&
-//           context.watch<timer_provider>().tempo_secondi <= 5) {
-//         return Colors.red;
-//       }
-//     }
-//     return Colors.white;
-//   }
-// }
-// ignore_for_file: file_names, prefer_const_constructors, prefer_const_literals_to_create_immutables, non_constant_identifier_names
-
+import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:progettomygimnuovo/services/Auth.dart';
+import 'package:progettomygimnuovo/Pages/AccountSettingsPage.dart';
+import 'package:progettomygimnuovo/Pages/ShopPage.dart';
+import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 
 import '../providers/timer_provider.dart';
@@ -151,21 +20,6 @@ class PrimaPagina extends StatefulWidget {
 }
 
 class _PrimaPaginaState extends State<PrimaPagina> {
-  // Widget verifica_tempo() {
-  //   if (context.watch<timer_provider>().tempo_secondi == 0) {
-  //     return Container(
-  //       height: 2,
-  //       color: Colors.black,
-  //     );
-  //   }
-  //   return Text(
-  //     '${context.watch<timer_provider>().tempo_secondi}',
-  //     style: TextStyle(
-  //       color: coloreNumero(),
-  //       fontWeight: FontWeight.w600,
-  //     ),
-  //   );
-  // }
   Widget verifica_tempo() {
     if (context.watch<timer_provider>().tempo_secondi == 0) {
       return Container(
@@ -174,11 +28,11 @@ class _PrimaPaginaState extends State<PrimaPagina> {
       );
     }
     return Container(
-      padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
+      padding: const EdgeInsets.symmetric(horizontal: 12.0, vertical: 8.0),
       decoration: BoxDecoration(
         color: Colors.black,
         borderRadius: BorderRadius.circular(20.0),
-        boxShadow: [
+        boxShadow: const [
           BoxShadow(
             color: Colors.black26,
             blurRadius: 4.0,
@@ -194,12 +48,12 @@ class _PrimaPaginaState extends State<PrimaPagina> {
             color: coloreNumero(),
             size: 20.0,
           ),
-          SizedBox(width: 6.0),
+          const SizedBox(width: 6.0),
           Text(
             '${context.watch<timer_provider>().tempo_secondi}',
             style: TextStyle(
               color: coloreNumero(),
-              fontWeight: FontWeight.w900,
+              fontWeight: FontWeight.w600,
             ),
           ),
         ],
@@ -207,39 +61,162 @@ class _PrimaPaginaState extends State<PrimaPagina> {
     );
   }
 
-  Future<void> signOut() async {
-    Auth().signOut();
+  Future<void> _fetchRandomQuote() async {
+    try {
+      final response = await http.get(
+        Uri.parse('https://api.api-ninjas.com/v1/quotes?category=fitness'),
+        headers: {
+          'X-Api-Key':
+              'POy6lJIYMFiNHbfW4qWI2g==S6xYX1PCp3fXDpNc', // Inserisci qui la tua chiave API
+        },
+      );
+      if (response.statusCode == 200) {
+        final List<dynamic> quoteData = jsonDecode(response.body);
+        if (quoteData.isNotEmpty) {
+          final String quote = quoteData[0]['quote'];
+          final String author = quoteData[0]['author'];
+          _showQuoteDialog('$quote\n\n- $author');
+        } else {
+          print('No quotes found.');
+        }
+      } else {
+        print('Failed to load random quote: ${response.statusCode}');
+        print('Response body: ${response.body}');
+      }
+    } catch (e) {
+      print('Error fetching random quote: $e');
+    }
   }
 
-  Future<void> _showLogoutConfirmationDialog() async {
-    return showDialog<void>(
+  void _showQuoteDialog(String quote) {
+    showModalBottomSheet(
       context: context,
-      barrierDismissible: false, // L'utente deve confermare o annullare
+      backgroundColor: Colors.transparent,
+      isScrollControlled: true,
       builder: (BuildContext context) {
-        return AlertDialog(
-          title: Text('Conferma Logout'),
-          content: SingleChildScrollView(
-            child: ListBody(
-              children: <Widget>[
-                Text('Sei sicuro di voler effettuare il logout?'),
-              ],
+        return Container(
+          padding: const EdgeInsets.all(16.0),
+          decoration: const BoxDecoration(
+            color: Colors.black,
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
             ),
           ),
-          actions: <Widget>[
-            TextButton(
-              child: Text('Annulla'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Chiude il dialogo
-              },
+          child: Wrap(
+            children: [
+              Center(
+                child: Container(
+                  margin: const EdgeInsets.only(top: 8.0, bottom: 16.0),
+                  width: 40.0,
+                  height: 4.0,
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+              ),
+              const Padding(
+                padding: EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  'Random Quote',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Padding(
+                padding: const EdgeInsets.symmetric(vertical: 16.0),
+                child: Text(
+                  quote,
+                  style: const TextStyle(
+                    color: Colors.white,
+                    fontSize: 18.0,
+                  ),
+                  textAlign: TextAlign.center,
+                ),
+              ),
+              Align(
+                alignment: Alignment.centerRight,
+                child: TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text(
+                    'Close',
+                    style: TextStyle(
+                      color: Colors.white,
+                      fontSize: 16.0,
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        );
+      },
+    );
+  }
+
+  void _showFullScreenMenu() {
+    showModalBottomSheet(
+      context: context,
+      isScrollControlled: true,
+      builder: (BuildContext context) {
+        return Container(
+          height: MediaQuery.of(context).size.height * 0.9,
+          decoration: const BoxDecoration(
+            gradient: LinearGradient(
+              colors: [Colors.white, Colors.black],
+              begin: Alignment.topCenter,
+              end: Alignment.bottomCenter,
             ),
-            TextButton(
-              child: Text('Conferma'),
-              onPressed: () {
-                Navigator.of(context).pop(); // Chiude il dialogo
-                signOut(); // Effettua il logout
-              },
+            borderRadius: BorderRadius.only(
+              topLeft: Radius.circular(20.0),
+              topRight: Radius.circular(20.0),
             ),
-          ],
+          ),
+          child: Column(
+            children: [
+              Container(
+                margin: const EdgeInsets.symmetric(vertical: 16.0),
+                width: 40.0,
+                height: 4.0,
+                decoration: BoxDecoration(
+                  color: Colors.grey[300],
+                  borderRadius: BorderRadius.circular(10.0),
+                ),
+              ),
+              ListTile(
+                leading: const Icon(Icons.home),
+                title: const Text('Home'),
+                onTap: () {
+                  Navigator.pop(context);
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.shop_2_outlined),
+                title: const Text('Shop'),
+                onTap: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => ShopPage()));
+                },
+              ),
+              ListTile(
+                leading: const Icon(Icons.settings),
+                title: const Text('Account Settings'),
+                onTap: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => AccountSettingsPage()));
+                },
+              ),
+            ],
+          ),
         );
       },
     );
@@ -249,29 +226,32 @@ class _PrimaPaginaState extends State<PrimaPagina> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        // leading: verifica_tempo(),
+        leading: IconButton(
+          icon: const Icon(Icons.menu),
+          onPressed: _showFullScreenMenu,
+        ),
         backgroundColor: Colors.black,
         centerTitle: true,
-        title: Text(
+        title: const Text(
           'MYHOMEGYM',
           style: TextStyle(color: Colors.white, fontWeight: FontWeight.w800),
         ),
         actions: [
-          verifica_tempo(),
-          IconButton(
-            onPressed: () {
-              // signOut();
-              _showLogoutConfirmationDialog();
-            },
-            icon: Icon(
-              Icons.logout_outlined,
-              color: Colors.white,
+          Padding(
+            padding: const EdgeInsets.only(right: 16.0),
+            child: GestureDetector(
+              onTap: _fetchRandomQuote,
+              child: const Icon(Icons.format_quote, size: 30.0),
             ),
-          )
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: verifica_tempo(),
+          ),
         ],
       ),
       body: Container(
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           gradient: LinearGradient(
             colors: [Colors.black, Colors.white],
             begin: Alignment.topCenter,
@@ -283,14 +263,14 @@ class _PrimaPaginaState extends State<PrimaPagina> {
           trackVisibility: true,
           thickness: 5,
           child: ListView(
-            children: [
+            children: const [
               Padding(
                 padding: EdgeInsets.symmetric(vertical: 10),
                 child: Column(
                   children: [
-                    const card_allenamento(),
-                    const card_miei_allenamenti(),
-                    const card_schede(),
+                    card_allenamento(),
+                    card_miei_allenamenti(),
+                    card_schede(),
                   ],
                 ),
               ),
@@ -302,7 +282,7 @@ class _PrimaPaginaState extends State<PrimaPagina> {
         onPressed: () {
           Navigator.pushNamed(context, '/orologio');
         },
-        child: Icon(Icons.timer_sharp),
+        child: const Icon(Icons.timer_sharp),
       ),
     );
   }

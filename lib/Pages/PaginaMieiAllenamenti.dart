@@ -238,6 +238,3 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
     );
   }
 }
-
-//per prendere la data del nuovo allenamento posso prenderla nel momento in cui clicco su nuovo allenamento
-//per incrementare il numero di allenamenti sfrutta una variabile collegata al provider
