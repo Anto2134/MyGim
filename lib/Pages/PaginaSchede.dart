@@ -49,23 +49,22 @@ class _PaginaSchedeState extends State<PaginaSchede> {
           showFormDialog();
         },
         backgroundColor: Colors.amberAccent[400],
-        child: Icon(
+        child: const Icon(
           Icons.add_to_photos_sharp,
           color: Colors.black,
         ),
       ),
-      body: ListView.builder(
-        itemCount: context.watch<nuovaScheda_provider>().schede.length,
-        // itemCount: schede.length,
-        itemBuilder: (context, index) {
-          print(schede.length);
-          return card_nuova_scheda(card: schede[index]);
-          // return Card(
-          //   color: Colors.black,
-          //   child: ListTile(),
-          // );
-          // return card_nuova_scheda();
-        },
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                colors: [Colors.black, Colors.amber])),
+        child: ListView.builder(
+          itemCount: context.watch<nuovaScheda_provider>().schede.length,
+          itemBuilder: (context, index) {
+            return card_nuova_scheda(card: schede[index]);
+          },
+        ),
       ),
     );
   }

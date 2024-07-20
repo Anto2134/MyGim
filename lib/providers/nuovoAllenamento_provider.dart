@@ -27,6 +27,7 @@ class nuovoAllenamento_provider with ChangeNotifier {
   List<String> date2 = [];
   Map<String, Map<String, List<String>>> orario2ese = {};
   String orario = '';
+  bool showDoneButton = true;
 
   bool get isSessionActive => _isSessionActive;
   DateTime get sessionStartTime => _sessionStartTime;
@@ -261,7 +262,7 @@ class nuovoAllenamento_provider with ChangeNotifier {
                 controller: textFieldController,
                 decoration: InputDecoration(
                   labelText: 'Esercizio',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.bold,
                   ),
@@ -277,13 +278,13 @@ class nuovoAllenamento_provider with ChangeNotifier {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextFormField(
                 controller: textFieldControllerNumero,
                 keyboardType: TextInputType.number,
                 decoration: InputDecoration(
                   labelText: 'Numero di serie',
-                  labelStyle: TextStyle(
+                  labelStyle: const TextStyle(
                     color: Colors.black54,
                     fontWeight: FontWeight.bold,
                   ),
@@ -299,91 +300,95 @@ class nuovoAllenamento_provider with ChangeNotifier {
                   return null;
                 },
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ...formFields,
             ],
           ),
         ),
       ),
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.done, color: Colors.green),
-          onPressed: () async {
-            nomeEsercizio = textFieldController.text;
-            toccato++;
-            if (toccato <= 1) {
-              if (formKey.currentState!.validate()) {
-                int? parsedNumber =
-                    int.tryParse(textFieldControllerNumero.text);
-                if (parsedNumber != null) {
-                  numeroSerie = parsedNumber;
+        if (showDoneButton)
+          IconButton(
+            icon: const Icon(Icons.done, color: Colors.green),
+            onPressed: () async {
+              nomeEsercizio = textFieldController.text;
+              toccato++;
+              if (toccato <= 1) {
+                if (formKey.currentState!.validate()) {
+                  int? parsedNumber =
+                      int.tryParse(textFieldControllerNumero.text);
+                  if (parsedNumber != null) {
+                    numeroSerie = parsedNumber;
+                  }
                 }
-              }
-              for (int i = 0; i < numeroSerie; i++) {
-                controllers.add(TextEditingController());
-                notifyListeners();
-              }
-              for (int i = 0; i < numeroSerie; i++) {
-                for (TextEditingController c in controllers) {
-                  formFields.add(TextFormField(
-                    controller: c,
-                    decoration: InputDecoration(
-                      labelText: "nuova riga",
-                      hintText: 'scrivi carico * numero di ripetizioni',
-                      labelStyle: TextStyle(
-                        color: Colors.black54,
-                        fontWeight: FontWeight.bold,
-                      ),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                      ),
-                    ),
-                    validator: (value) {
-                      if (value!.isEmpty) {
-                        formFields.length = 0;
-                        controllers.length = 0;
-                        notifyListeners();
-                        return 'scrivi carico * numero di ripetizioni';
-                      }
-                      return null;
-                    },
-                  ));
+                for (int i = 0; i < numeroSerie; i++) {
+                  controllers.add(TextEditingController());
                   notifyListeners();
                 }
+                for (int i = 0; i < numeroSerie; i++) {
+                  for (TextEditingController c in controllers) {
+                    formFields.add(TextFormField(
+                      controller: c,
+                      decoration: InputDecoration(
+                        labelText: "nuova riga",
+                        hintText: 'scrivi carico * numero di ripetizioni',
+                        labelStyle: const TextStyle(
+                          color: Colors.black54,
+                          fontWeight: FontWeight.bold,
+                        ),
+                        border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                      ),
+                      validator: (value) {
+                        if (value!.isEmpty) {
+                          formFields.length = 0;
+                          controllers.length = 0;
+                          notifyListeners();
+                          return 'scrivi carico * numero di ripetizioni';
+                        }
+                        return null;
+                      },
+                    ));
+                    notifyListeners();
+                  }
+                }
+                formFields.length = numeroSerie;
+                showDoneButton = false;
+                notifyListeners();
               }
-              formFields.length = numeroSerie;
+            },
+          ),
+        if (!showDoneButton)
+          TextButton(
+            onPressed: () {
+              toccato = 0;
+              List<String> dati = [];
+              for (int i = 0; i < controllers.length; i++) {
+                dati.add(controllers[i].text);
+              }
+              nomeEsercizio = textFieldController.text;
+              nome2nserie[nomeEsercizio] = dati;
+              if (_isSessionActive) {
+                orario2ese[orario] = nome2nserie;
+                saveMap(orario2ese);
+              }
+              if (formKey.currentState!.validate()) {
+                Navigator.of(context_p!).pop();
+                lista();
+                controllers = [];
+                showDoneButton = true;
+              }
               notifyListeners();
-            }
-          },
-        ),
-        TextButton(
-          onPressed: () {
-            toccato = 0;
-            List<String> dati = [];
-            for (int i = 0; i < controllers.length; i++) {
-              dati.add(controllers[i].text);
-            }
-            nomeEsercizio = textFieldController.text;
-            nome2nserie[nomeEsercizio] = dati;
-            if (_isSessionActive) {
-              orario2ese[orario] = nome2nserie;
-              saveMap(orario2ese);
-            }
-            if (formKey.currentState!.validate()) {
-              Navigator.of(context_p!).pop();
-              lista();
-              controllers = [];
-            }
-            notifyListeners();
-          },
-          child: const Text(
-            'Chiudi',
-            style: TextStyle(
-              color: Colors.red,
-              fontWeight: FontWeight.bold,
+            },
+            child: const Text(
+              'Chiudi',
+              style: TextStyle(
+                color: Colors.red,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
-        ),
       ],
     );
   }

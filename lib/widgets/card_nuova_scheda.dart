@@ -25,10 +25,15 @@ class card_nuova_schedaState extends State<card_nuova_scheda> {
         ));
       },
       child: Card(
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(40)),
+        shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(40),
+            side: BorderSide(color: Colors.white, width: 2)),
         color: Colors.amberAccent[400],
         child: ListTile(
-          title: Text(widget.card.getNome(), style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),),
+          title: Text(
+            widget.card.getNome(),
+            style: TextStyle(color: Colors.black, fontWeight: FontWeight.w700),
+          ),
         ),
       ),
     );

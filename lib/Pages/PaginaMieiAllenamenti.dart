@@ -55,67 +55,72 @@ class _PaginaMieiAllenamentiState extends State<PaginaMieiAllenamenti> {
                     },
                     icon: const Icon(
                       Icons.arrow_back,
-                      color: Colors.red,
+                      color: Colors.blue,
                     )),
               ),
-              body: ListView.builder(
-                itemCount: dati.length,
-                itemBuilder: (context, index) {
-                  final card = dati[index];
-                  return Dismissible(
-                    key: Key(card),
-                    direction: DismissDirection.endToStart,
-                    onDismissed: (direction) {
-                      dismissCard(card);
-                    },
-                    background: Container(
-                      alignment: Alignment.centerRight,
-                      color: Colors.red,
-                      child: const Padding(
-                        padding: EdgeInsets.only(right: 20.0),
-                        child: Icon(
-                          Icons.delete,
-                          color: Colors.white,
+              body: Container(
+                decoration: const BoxDecoration(
+                    gradient:
+                        LinearGradient(colors: [Colors.black, Colors.blue])),
+                child: ListView.builder(
+                  itemCount: dati.length,
+                  itemBuilder: (context, index) {
+                    final card = dati[index];
+                    return Dismissible(
+                      key: Key(card),
+                      direction: DismissDirection.endToStart,
+                      onDismissed: (direction) {
+                        dismissCard(card);
+                      },
+                      background: Container(
+                        alignment: Alignment.centerRight,
+                        color: Colors.red,
+                        child: const Padding(
+                          padding: EdgeInsets.only(right: 20.0),
+                          child: Icon(
+                            Icons.delete,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                    ),
-                    child: Card(
-                      color: Colors.black,
-                      shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20)),
-                      child: ListTile(
-                        onTap: () {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) {
-                                return SubCategoryPage(
-                                  category: card,
-                                  map: orario2ese,
-                                  indice: index,
-                                );
-                              },
-                            ),
-                          );
-                        },
-                        title: Text(
-                          'Allenamento ${index + 1} ',
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.w700),
-                        ),
-                        trailing: Text(
-                          "creato il:$card",
-                          style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w700),
+                      child: Card(
+                        color: Colors.black,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20)),
+                        child: ListTile(
+                          onTap: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) {
+                                  return SubCategoryPage(
+                                    category: card,
+                                    map: orario2ese,
+                                    indice: index,
+                                  );
+                                },
+                              ),
+                            );
+                          },
+                          title: Text(
+                            'Allenamento ${index + 1} ',
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700),
+                          ),
+                          trailing: Text(
+                            "creato il:$card",
+                            style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 13,
+                                fontWeight: FontWeight.w700),
+                          ),
                         ),
                       ),
-                    ),
-                  );
-                },
+                    );
+                  },
+                ),
               ),
             ));
   }
@@ -202,38 +207,45 @@ class _SubCategoryPageState extends State<SubCategoryPage> {
         ),
         backgroundColor: Colors.black,
       ),
-      body: ListView.builder(
-        itemCount: numeroElementi(),
-        itemBuilder: (context, index) {
-          nSerie = 1;
-          return SizedBox(
-            height: 280,
-            child: Card(
-              color: Colors.black,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: ListTile(
-                // title: Text(esercizi[index]),
-                title: Padding(
-                  padding: const EdgeInsets.all(8),
-                  child: Text(
-                    esercizi[index],
-                    style: const TextStyle(
-                        color: Colors.white,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600),
+      body: Container(
+        decoration: const BoxDecoration(
+            gradient: LinearGradient(
+                begin: Alignment.topCenter,
+                colors: [Colors.blue, Colors.black])),
+        child: ListView.builder(
+          itemCount: numeroElementi(),
+          itemBuilder: (context, index) {
+            nSerie = 1;
+            return SizedBox(
+              height: 280,
+              child: Card(
+                color: Colors.black,
+                shape: RoundedRectangleBorder(
+                  side: const BorderSide(color: Colors.white, width: 2),
+                  borderRadius: BorderRadius.circular(50),
+                ),
+                child: ListTile(
+                  // title: Text(esercizi[index]),
+                  title: Padding(
+                    padding: const EdgeInsets.all(8),
+                    child: Text(
+                      esercizi[index],
+                      style: const TextStyle(
+                          color: Colors.white,
+                          fontSize: 28,
+                          fontWeight: FontWeight.w600),
+                    ),
                   ),
+                  subtitle: SizedBox(
+                    height: 190,
+                    child: stampa(esercizi[index]),
+                  ),
+                  trailing: Text(elemento(esercizi[index])),
                 ),
-                subtitle: SizedBox(
-                  height: 190,
-                  child: stampa(esercizi[index]),
-                ),
-                trailing: Text(elemento(esercizi[index])),
               ),
-            ),
-          );
-        },
+            );
+          },
+        ),
       ),
     );
   }

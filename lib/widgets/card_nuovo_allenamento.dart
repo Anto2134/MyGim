@@ -123,7 +123,7 @@ class _card_nuovo_allenamentoState extends State<card_nuovo_allenamento> {
             ),
             child: Container(
               decoration: BoxDecoration(
-                gradient: LinearGradient(
+                gradient: const LinearGradient(
                   colors: [Colors.red, Colors.black],
                   begin: Alignment.topLeft,
                   end: Alignment.bottomRight,
@@ -131,10 +131,10 @@ class _card_nuovo_allenamentoState extends State<card_nuovo_allenamento> {
                 borderRadius: BorderRadius.circular(20),
               ),
               child: ListTile(
-                contentPadding: EdgeInsets.all(16),
+                contentPadding: const EdgeInsets.all(16),
                 title: Text(
                   'Esercizio: $chiave',
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.white,
                     fontWeight: FontWeight.bold,
                     fontSize: 20,
@@ -150,7 +150,7 @@ class _card_nuovo_allenamentoState extends State<card_nuovo_allenamento> {
                             padding: const EdgeInsets.only(top: 8.0),
                             child: Text(
                               'Serie $serieNumber: $item',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white70,
                                 fontSize: 16,
                               ),

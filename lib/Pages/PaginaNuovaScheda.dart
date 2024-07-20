@@ -110,6 +110,7 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
               height: 100,
               child: Card(
                 shape: RoundedRectangleBorder(
+                    side: const BorderSide(color: Colors.white, width: 2),
                     borderRadius: BorderRadius.circular(50)),
                 color: Colors.black,
                 child: Column(
@@ -185,42 +186,46 @@ class _PaginaNuovaSchedaState extends State<PaginaNuovaScheda>
             ),
           ],
         ),
-        body: Consumer<nuovaScheda_provider>(
-          builder: (context, provider, _) {
-            tab currentTab;
-            return Column(
-              children: [
-                TabBar(
-                  indicatorColor: Colors.amber,
-                  labelColor: Colors.black,
-                  isScrollable: true,
-                  onTap: (index) {
-                    if (mounted) {
-                      setState(() {
-                        currentIndex = index;
-                        currentTab = tabs[currentIndex];
-                        print(currentIndex);
-                        print(index);
-                      });
-                    }
-                  },
-                  tabs: returnTabs(),
-                ),
-                Expanded(
-                  child: returnBody(),
-                ),
-              ],
-            );
-          },
+        body: Container(
+          decoration: const BoxDecoration(
+              gradient: LinearGradient(
+                  begin: Alignment.topCenter,
+                  colors: [Colors.black, Colors.deepOrangeAccent])),
+          child: Consumer<nuovaScheda_provider>(
+            builder: (context, provider, _) {
+              tab currentTab;
+              return Column(
+                children: [
+                  TabBar(
+                    indicatorColor: Colors.deepOrange,
+                    labelColor: Colors.black,
+                    isScrollable: true,
+                    onTap: (index) {
+                      if (mounted) {
+                        setState(() {
+                          currentIndex = index;
+                          currentTab = tabs[currentIndex];
+                        });
+                      }
+                    },
+                    tabs: returnTabs(),
+                  ),
+                  Expanded(
+                    child: returnBody(),
+                  ),
+                ],
+              );
+            },
+          ),
         ),
         floatingActionButton: FloatingActionButton(
-          backgroundColor: Colors.amber,
+          backgroundColor: Colors.white,
           onPressed: () {
             String currentTab = tabs[currentIndex].getTitolo();
             showFormDialog(context, currentTab);
           },
           child: const Icon(
-            Icons.add_box_outlined,
+            Icons.add_circle_outlined,
             color: Colors.black,
           ),
         ),

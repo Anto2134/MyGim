@@ -56,6 +56,9 @@ class _PaginaAllenamentoState extends State<PaginaAllenamento> {
     );
   }
 
+  //se non hai ancora cliccato la spunta non devi far uscire chiudi quindi metti un counter, 
+  //se invece hai già premuto la spunta la fai sparire e fai comparire solo chiudi
+
   void _showStartSessionDialog() {
     showDialog(
       context: context,

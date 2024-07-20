@@ -114,6 +114,7 @@ class nuovaScheda_provider with ChangeNotifier {
 
   void azzera() {
     textFieldControllerEs.text = '';
+    textFieldControllerSerie.text = '';
   }
 
   AlertDialog generaForm2(String titolo, scheda scheda) {
