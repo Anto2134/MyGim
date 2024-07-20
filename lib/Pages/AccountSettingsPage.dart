@@ -1,7 +1,11 @@
+// ignore_for_file: use_build_context_synchronously, library_private_types_in_public_api, prefer_final_fields
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 class AccountSettingsPage extends StatefulWidget {
+  const AccountSettingsPage({super.key});
+
   @override
   _AccountSettingsPageState createState() => _AccountSettingsPageState();
 }
@@ -27,7 +31,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Account Settings'),
+        title: const Text('Account Settings'),
         backgroundColor: Colors.black,
       ),
       body: Padding(
@@ -40,7 +44,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
               TextFormField(
                 controller: _emailController,
                 keyboardType: TextInputType.emailAddress,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   labelText: 'New Email',
                   border: OutlineInputBorder(),
                 ),
@@ -51,15 +55,17 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 16.0),
+              const SizedBox(height: 16.0),
               TextFormField(
                 controller: _passwordController,
-                obscureText: _isObscure, // Utilizza il flag per mostrare/nascondere la password
+                obscureText:
+                    _isObscure, // Utilizza il flag per mostrare/nascondere la password
                 decoration: InputDecoration(
                   labelText: 'New Password',
-                  border: OutlineInputBorder(),
+                  border: const OutlineInputBorder(),
                   suffixIcon: IconButton(
-                    icon: Icon(_isObscure ? Icons.visibility : Icons.visibility_off),
+                    icon: Icon(
+                        _isObscure ? Icons.visibility : Icons.visibility_off),
                     onPressed: () {
                       setState(() {
                         _isObscure = !_isObscure;
@@ -74,7 +80,7 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                   return null;
                 },
               ),
-              SizedBox(height: 24.0),
+              const SizedBox(height: 24.0),
               ElevatedButton(
                 onPressed: () async {
                   if (_formKey.currentState!.validate()) {
@@ -82,9 +88,11 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                       User? user = FirebaseAuth.instance.currentUser;
                       if (user != null) {
                         await user.updateEmail(_emailController.text.trim());
-                        await user.updatePassword(_passwordController.text.trim());
+                        await user
+                            .updatePassword(_passwordController.text.trim());
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(content: Text('Changes saved successfully')),
+                          const SnackBar(
+                              content: Text('Changes saved successfully')),
                         );
                       }
                     } catch (e) {
@@ -94,13 +102,13 @@ class _AccountSettingsPageState extends State<AccountSettingsPage> {
                     }
                   }
                 },
-                child: Text('Save Changes'),
+                child: const Text('Save Changes'),
               ),
-              SizedBox(height: 12.0),
+              const SizedBox(height: 12.0),
               if (_errorMessage.isNotEmpty)
                 Text(
                   _errorMessage,
-                  style: TextStyle(color: Colors.red),
+                  style: const TextStyle(color: Colors.red),
                 ),
             ],
           ),

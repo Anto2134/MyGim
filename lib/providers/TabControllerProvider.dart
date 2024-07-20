@@ -30,10 +30,4 @@ class TabControllerProvider with ChangeNotifier {
     tabData[tabTitle]?.add(data);
     notifyListeners();
   }
-
-  // @override
-  // void dispose() {
-  //   tabController.dispose();
-  //   super.dispose();
-  // }
 }

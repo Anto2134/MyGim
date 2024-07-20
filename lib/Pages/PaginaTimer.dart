@@ -95,9 +95,6 @@ class _PaginaTimerState extends State<PaginaTimer> {
 
   @override
   Widget build(BuildContext context) {
-    // return MaterialApp(
-    // theme: ThemeData.from(
-    // colorScheme: ColorScheme.fromSwatch(primarySwatch: Colors.grey)),
     return Scaffold(
       appBar: AppBar(
         forceMaterialTransparency: true,

@@ -1,3 +1,5 @@
+// ignore_for_file: file_names
+
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/providers/nuovaScheda_provider.dart';
 import 'package:progettomygimnuovo/widgets/card_nuova_scheda.dart';
@@ -62,7 +64,32 @@ class _PaginaSchedeState extends State<PaginaSchede> {
         child: ListView.builder(
           itemCount: context.watch<nuovaScheda_provider>().schede.length,
           itemBuilder: (context, index) {
-            return card_nuova_scheda(card: schede[index]);
+            var schedaItem = context.watch<nuovaScheda_provider>().schede[index];
+            return Dismissible(
+              key: Key(schedaItem.id.toString()), // Assicurati di usare un identificatore univoco
+              onDismissed: (direction) {
+                // Rimuovi la scheda
+                context.read<nuovaScheda_provider>().removeScheda(schedaItem);
+                // Opzionalmente mostra un messaggio
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(
+                    content: Text("${schedaItem.nome} cancellata"),
+                    duration: const Duration(seconds: 2),
+                  ),
+                );
+              },
+              background: Container(
+                color: Colors.red,
+                alignment: Alignment.centerLeft,
+                padding: const EdgeInsets.symmetric(horizontal: 20),
+                child: const Icon(
+                  Icons.delete,
+                  color: Colors.white,
+                  size: 30,
+                ),
+              ),
+              child: card_nuova_scheda(card: schedaItem),
+            );
           },
         ),
       ),

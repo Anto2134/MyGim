@@ -15,7 +15,6 @@ class nuovaScheda_provider with ChangeNotifier {
   TextEditingController textFieldControllerTab = TextEditingController();
   TextEditingController textFieldControllerNumero = TextEditingController();
   TextEditingController textFieldControllerSerie = TextEditingController();
-  // List<String> schede = [];
   BuildContext? context;
   List<scheda> schede = [];
   final GlobalKey<FormState> formKey = GlobalKey<FormState>();
@@ -30,13 +29,14 @@ class nuovaScheda_provider with ChangeNotifier {
   List<tab> tabs = [];
   Map<scheda, List<tab>> scheda2tabs = {};
 
+  void removeScheda(scheda schedaDaRimuovere) {
+    schede.remove(schedaDaRimuovere);
+    notifyListeners();
+  }
+
   void addTab(scheda card) {
     final title = 'Tab ${tabTitles.length + 1}';
-    // tabTitles.add(title);
-    // card.addTab();
     tab2esercizio[title] = [];
-    // card.setTab(tabTitles);
-    // tabTitles = [];
     notifyListeners();
   }
 
@@ -88,12 +88,7 @@ class nuovaScheda_provider with ChangeNotifier {
               tabTitles = [];
               map = {};
               nome2esee = {};
-              // nuova.setData(tab, ese);
               nuova.setNome(textFieldController.text);
-              // nuova.setMap(tab2esercizio);
-              // nuova.setTab(tabTitles);
-              // nuova.setF(map);
-              // nuova.setNome2serie(nome2esee);
               schede.add(nuova);
               if (formKey.currentState!.validate()) {
                 int? parsedNumber =
@@ -103,7 +98,6 @@ class nuovaScheda_provider with ChangeNotifier {
                 }
               }
               notifyListeners();
-              // schede.add(textFieldController.text);
               textFieldController.text = "";
               Navigator.pop(context!);
             },
@@ -150,30 +144,12 @@ class nuovaScheda_provider with ChangeNotifier {
       actions: [
         IconButton(
             onPressed: () {
-              // esercizio.add(textFieldControllerEs.text);
-              // tab2esercizio[titolo] = esercizio;
-              // tab2esercizio[titolo]?.add(textFieldControllerEs.text);
-              // scheda.addDati(titolo, textFieldControllerEs.text);
-              // List<String> app = [];
-              // app.add(textFieldControllerEs.text);
-              // ese2serie[textFieldControllerEs.text] = app;
               print('object' + ese2serie.toString());
-              // scheda.setData(titolo, textFieldControllerEs.text,
-              // textFieldControllerSerie.text);
-              // scheda.setDati(titolo, ese2serie);
               scheda.addDati(titolo, textFieldControllerEs.text,
                   textFieldControllerSerie.text);
-              // app.clear();
-              // scheda.setMap();
-              // scheda.addDati(titolo, textFieldControllerSerie.text);
-              // scheda.setMap(tab2esercizio);
-              // scheda.setTab(tabTitles);
-              // nuova.setMap(tab2esercizio);
               notifyListeners();
-              // app.clear();
               Navigator.pop(context!);
               azzera();
-              // tab2esercizio = {};
             },
             icon: Icon(Icons.close))
       ],
@@ -202,15 +178,9 @@ class nuovaScheda_provider with ChangeNotifier {
             onPressed: () {
               scheda.addNewTab(textFieldControllerTab.text);
               ese2serie.clear();
-              // scheda.reset(textFieldControllerTab.text);
-              // scheda.setData(textFieldControllerTab.text, "", "");
-              // scheda.setF({});
-              // scheda.map[textFieldControllerTab.text] = {};
-              // scheda.nome2serie = {};
               notifyListeners();
               Navigator.pop(context!);
               textFieldControllerTab.text = "";
-              // azzera();
             },
             icon: Icon(Icons.close))
       ],

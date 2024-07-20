@@ -8,7 +8,6 @@ class timer_provider with ChangeNotifier {
   int tempo_secondi = 0;
   Timer? timer;
   int tempo_iniziale_sec = 0;
-  // int tempo_in_corso = 0;
   int count = 0;
   int count_cancella = 0;
   int count_startato = 0;
@@ -23,14 +22,10 @@ class timer_provider with ChangeNotifier {
 
   void toccato_c() {
     count_cancella++;
-    print('CANCELLA:');
-    print(count_cancella);
   }
 
   void toccato() {
     count++;
-    print('CONTO:');
-    print(count);
   }
 
   void azzera() {
@@ -52,7 +47,6 @@ class timer_provider with ChangeNotifier {
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
       if (tempo_secondi > 0) {
         tempo_secondi--;
-        // tempo_in_corso = tempo_secondi;
         notifyListeners();
       } else {
         stopTimer(reset: false);
@@ -68,21 +62,6 @@ class timer_provider with ChangeNotifier {
   }
 
   void stopTimer({bool reset = true}) {
-    // if (reset) {
-    // resetTimer();
-    // tempo_secondi = tempo_iniziale_sec;
-    // notifyListeners();
-    // }
-    /*if (count <= 1) {
-      tempo_secondi = tempo_in_corso;
-      timer?.cancel();
-      notifyListeners();
-    }
-    if (count >= 1) {
-      tempo_secondi = tempo_in_corso + 1;
-      timer?.cancel();
-      notifyListeners();
-    }*/
     timer?.cancel();
     notifyListeners();
   }
@@ -93,10 +72,7 @@ class timer_provider with ChangeNotifier {
       notifyListeners();
     }
     timer = Timer.periodic(const Duration(seconds: 1), (timer) {
-      // tempo_secondi = tempo_in_corso;
       if (tempo_secondi > 0) {
-        print('tempo secondi:');
-        print(tempo_secondi);
         tempo_secondi--;
         notifyListeners();
       }
