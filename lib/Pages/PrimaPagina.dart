@@ -1,6 +1,7 @@
-// ignore_for_file: non_constant_identifier_names
+// ignore_for_file: non_constant_identifier_names, use_build_context_synchronously
 
 import 'dart:convert';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:progettomygimnuovo/Pages/AccountSettingsPage.dart';
 import 'package:progettomygimnuovo/Pages/ShopPage.dart';
@@ -215,11 +216,28 @@ class _PrimaPaginaState extends State<PrimaPagina> {
                           builder: (context) => AccountSettingsPage()));
                 },
               ),
+              ListTile(
+                leading: const Icon(Icons.logout_outlined),
+                title: const Text('Logout'),
+                onTap: () {
+                  _logout();
+                },
+              )
             ],
           ),
         );
       },
     );
+  }
+
+  void _logout() async {
+    try {
+      await FirebaseAuth.instance.signOut();
+      Navigator.pushNamedAndRemoveUntil(context, '/auth', (route) => false);
+    } catch (e) {
+      print('Errore durante il logout: $e');
+      // Mostra un messaggio di errore se necessario
+    }
   }
 
   @override

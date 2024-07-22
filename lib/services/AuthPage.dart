@@ -28,17 +28,26 @@ class _AuthPageState extends State<AuthPage> {
           email: _emailController.text,
           password: _passwordController.text,
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Login avvenuto con successo!')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(content: Text('Login avvenuto con successo!')),
+          );
+          Navigator.pushReplacementNamed(
+              context, '/prima'); // Naviga alla home page
+        }
       } else {
         await FirebaseAuth.instance.createUserWithEmailAndPassword(
           email: _emailController.text,
           password: _passwordController.text,
         );
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registrazione avvenuta con successo!')),
-        );
+        if (mounted) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('Registrazione avvenuta con successo!')),
+          );
+          Navigator.pushReplacementNamed(
+              context, '/prima'); // Naviga alla home page
+        }
       }
     } on FirebaseAuthException catch (e) {
       String message = 'Email o password errati';
@@ -50,13 +59,17 @@ class _AuthPageState extends State<AuthPage> {
         message = 'Email già in uso.';
       }
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text(message)),
-      );
+      if (mounted) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text(message)),
+        );
+      }
     } finally {
-      setState(() {
-        _isLoading = false;
-      });
+      if (mounted) {
+        setState(() {
+          _isLoading = false;
+        });
+      }
     }
   }
 
